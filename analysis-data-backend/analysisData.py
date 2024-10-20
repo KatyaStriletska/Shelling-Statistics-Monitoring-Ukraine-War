@@ -57,9 +57,11 @@ df_massive_attacks["not_reach_goal"] = df_massive_attacks["not_reach_goal"].fill
 
 print("\nSum of null/missing values: \n", df_massive_attacks.isnull().sum())
 print(f"Shape after drpopping: {df_massive_attacks.shape}")
-
-print(df_massive_attacks[0::100])
 df_year = df_massive_attacks[df_massive_attacks['time_start'].dt.year == 2024]
-df_year['month'] = df_year['time_start'].dt.month
-df_year.groupby('month').size().reset_index(name='count')
-print(df_year)
+# Assuming df_year is a slice of another DataFrame
+df_year.loc[:, 'month'] = df_year['time_start'].dt.month
+monthly_stats = df_year.groupby('month').agg({
+        'launched': 'sum',
+        'destroyed': 'sum'
+    }).reset_index()
+print(monthly_stats)
