@@ -1,5 +1,6 @@
 // import './App.css';
 import React, {useState,  useEffect } from 'react'
+import Header from './Header';
 
 function App() {
 
@@ -24,8 +25,11 @@ function App() {
 
   return (
     <div>
+      <Header/>
       {/* {(typeof data.members === 'underfined')} */}
-
+      <header className="App-header">
+        gg
+      </header>
     </div>
     // <div className="App">
     //   <header className="App-header">

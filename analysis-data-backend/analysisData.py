@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-df_massive_attacks = pd.read_csv("C:\Users\user\KMA\Into to DS\ShellingAnalysisUkraine\data\missile_attacks_daily.csv")
+df_massive_attacks = pd.read_csv("data\missile_attacks_daily.csv")
 
 # preprocessing data for missile_attacks_daily.csv
 
@@ -56,3 +56,6 @@ df_massive_attacks["back_russia"] = df_massive_attacks["back_russia"].fillna(0.0
 df_massive_attacks["not_reach_goal"] = df_massive_attacks["not_reach_goal"].fillna(0.0)
 
 print("\nSum of null/missing values: \n", df_massive_attacks.isnull().sum())
+print(f"Shape after drpopping: {df_massive_attacks.shape}")
+
+print(df_massive_attacks[0::100])
