@@ -59,3 +59,19 @@ print("\nSum of null/missing values: \n", df_massive_attacks.isnull().sum())
 print(f"Shape after drpopping: {df_massive_attacks.shape}")
 
 print(df_massive_attacks[0::100])
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Assuming 'missile_status' column exists with values like 'hit', 'intercepted', 'failed'
+df_massive_attacks['status'] = np.where(df_massive_attacks['not_reach_goal'] > 0, 'intercepted', 'hit')
+
+# Group by missile type (or other factors) and status
+missile_stats = df_massive_attacks.groupby(['missile_type', 'status']).size().unstack().fillna(0)
+
+# Plotting
+missile_stats.plot(kind='bar', stacked=True, figsize=(10,6))
+plt.title('Comparison of Hit vs. Intercepted Missiles by Type')
+plt.xlabel('Missile Type')
+plt.ylabel('Number of Attacks')
+plt.show()
+
