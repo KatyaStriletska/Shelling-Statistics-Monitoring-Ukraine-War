@@ -25,5 +25,6 @@ def get_graph1():
     graph = plot_total_launched_and_destroyed_per_year(df_massive_attacks, year)
     return jsonify(json.loads(graph))
 
+
 if __name__ == '__main__':
     app.run(debug=True)
