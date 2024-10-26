@@ -279,6 +279,44 @@ def plot_total_launched_and_destroyed_per_year(df: pd.DataFrame, year: int):
     ),
     showlegend=True,     
     )
+    # fig.write_html("../../static/interactiveCharts/linechart-plotly-basic.html")
+    fig.write_html("linechart-plotly-basic.html")
+    fig.show()
+
+def plot_total_launched_and_destroyed_per_category_and_year(year: int, category: str, df: pd.DataFrame):
+    grouped_data = df.xs((year, category), level=('year', 'category'))
+
+    if grouped_data.empty:
+        print(f'No data available for {year} in category "{category}".')
+        return
+
+    models = grouped_data.index.tolist()
+    launched = grouped_data['launched'].tolist()
+    destroyed = grouped_data['destroyed'].tolist()
+    reached_goal = grouped_data['reached_goal'].tolist()
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Bar(x=models, y=launched, name='Launched', 
+                         hovertemplate='Launched<br>%{x}: %{y}<extra></extra>', 
+                         marker_color="#3e5334"))
+
+    fig.add_trace(go.Bar(x=models, y=destroyed, name='Destroyed', 
+                         hovertemplate='Destroyed<br>%{x}: %{y}<extra></extra>', 
+                         marker_color="#6d8162"))
+
+    fig.add_trace(go.Bar(x=models, y=reached_goal, name='Reached Goal', 
+                         hovertemplate='Reached Goal<br>%{x}: %{y}<extra></extra>', 
+                         marker_color="#c0cfc0"))
+
+    fig.update_layout(title=f'Weapons launched from the {category} category in {year}',
+                      xaxis_title='Models',
+                      yaxis_title='Amount',
+                      xaxis_tickangle=-45,
+                      plot_bgcolor='#f1f1ec' ,
+                      barmode='group')
+
+    fig.show()
     return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
 

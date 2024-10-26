@@ -64,8 +64,28 @@ def load_and_process_data(file_path: str) -> pd.DataFrame:
     return df_massive_attacks
 
 def merge_two_datas_by_model(df_missiles_daily: pd.DataFrame):
-    df_missiles_description = pd.read_csv("data/missiles_and_uav.csv")
+
+    df_missiles_description = pd.read_csv("/Users/admin/Documents/Shelling-Statistics-Monitoring-Ukraine-War/data/missiles_and_uav.csv")
+    df_missiles_description['model'] = df_missiles_description['model'].str.split(' and ')
+
+    df_missiles_description = df_missiles_description.explode('model')
+    
+    df_missiles_description['model'] = df_missiles_description['model'].replace(['C-300', 'C-400'], 'C-300/C-400')
+    df_missiles_description['model'] = df_missiles_description['model'].replace(['Iskander-M', 'KN-23'], 'Iskander-M/KN-23')
+    df_missiles_description['model'] = df_missiles_description['model'].replace(['X-59', 'X-69', 'X-59/X-69\t'], 'X-59/X-69')
+    df_missiles_description['model'] = df_missiles_description['model'].replace(['X-555', 'X-101'], 'X-101/X-555')
+
+    df_missiles_daily["year"] = df_missiles_daily["time_start"].dt.year
+
     df_missiles = df_missiles_daily.merge(df_missiles_description, how='left', on=['model'])
-    df_missiles = df_missiles.groupby(['category','model'], dropna=True)[['launched', 'destroyed']].sum()
+    
+    df_missiles = df_missiles.groupby(['year','category','model'], dropna=True)[['launched', 'destroyed']].sum()
     df_missiles['reached_goal'] = df_missiles['launched'] - df_missiles['destroyed']
     return df_missiles
+
+#df_missiles it is merged daily and uav dataset
+#func fir getting all of the categories if weapons per year
+def get_categories_for_year(df_missiles: pd.DataFrame, year: int):
+    filtered_df = df_missiles.xs(year, level='year')
+
+    return filtered_df.index.get_level_values('category').unique()
