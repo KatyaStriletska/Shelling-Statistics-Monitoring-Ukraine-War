@@ -11,7 +11,7 @@ function App() {
       <br></br>
       <PlotStatByYear
         title = "Launched vs Destroyed Missiles"
-        apiUrl= "http://localhost:5000/graph1"
+        apiUrl= "http://localhost:5000/graph2"
       />
     </div>
   );

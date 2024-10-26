@@ -4,7 +4,6 @@ import plotly.graph_objects as go
 import json
 import plotly.utils 
 import matplotlib.pyplot as plt
-import pandas as pd
 import plotly.offline as pyo
 
 
@@ -231,10 +230,10 @@ def chart_most_common_weapons_per_year(data: pd.DataFrame, year: int):
                                  hole=0.5)])
 
     fig.update_layout(title_text="Most common models of weapons")
+    return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    fig.show()
+    # fig.show()
 
-import plotly.graph_objects as go
 
 def plot_total_launched_and_destroyed_per_year(df: pd.DataFrame, year: int):
     df_year = df[df['time_start'].dt.year == year].copy()
@@ -281,8 +280,7 @@ def plot_total_launched_and_destroyed_per_year(df: pd.DataFrame, year: int):
     showlegend=True,     
     )
     return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-colors = ["#2b472f", "#3e5334", "#4a6047", "#556a48", "#6d8162", "#718970",
-              "#889a80", "#9fb29e", "#a6b899", "#c0cfc0", "#d8e8d1"]
+
 
 def plot_total_reached_and_destroyed_by_category(df: pd.DataFrame):
     # df['reached_goal'] = df['launched'] - df['destroyed']
