@@ -20,12 +20,12 @@ def load_and_process_data(file_path: str) -> pd.DataFrame:
     df_massive_attacks["time_start"] = df_massive_attacks["time_start"].apply(parse_datetime)
     df_massive_attacks["time_end"] = df_massive_attacks["time_end"].apply(parse_datetime)
 
-# print(f"\nData types after: \n {df_massive_attacks.dtypes} \nShape: {df_massive_attacks.shape}")
+    # print(f"\nData types after: \n {df_massive_attacks.dtypes} \nShape: {df_massive_attacks.shape}")
 
-# Checking for null/missing values
-# print("\nSum of null/missing values: \n", df_massive_attacks.isnull().sum())
+    # Checking for null/missing values
+    # print("\nSum of null/missing values: \n", df_massive_attacks.isnull().sum())
     df_massive_attacks = df_massive_attacks.drop(["launched_details", "launch_place_details", "still_attacking", "cross_border_belarus"],  axis=1)
-# print("\nSum of null/missing values after dropping: \n", df_massive_attacks.isnull().sum())
+    # print("\nSum of null/missing values after dropping: \n", df_massive_attacks.isnull().sum())
 
 # Checking for duplicate values
 # print(f"Duplicate values: {df_massive_attacks.duplicated().sum()}")
@@ -33,20 +33,20 @@ def load_and_process_data(file_path: str) -> pd.DataFrame:
 
 # print(df_massive_attacks.describe())
 
-
-
-# Transform empty 'launch_place' values 
-
+    # Transform empty 'launch_place' values 
     df_massive_attacks['launch_place'] = df_massive_attacks['launch_place'].str.split(' and ')
     df_massive_attacks = df_massive_attacks.explode('launch_place')
     mode_launch_place = df_massive_attacks['launch_place'].mode()[0]
 
     df_massive_attacks['launch_place'] = df_massive_attacks['launch_place'].fillna(mode_launch_place)
     most_common_places = df_massive_attacks['launch_place'].value_counts()
-# df_massive_attacks['launch_place'] = df_massive_attacks['launch_place'].astype('category')
-# print(most_common_places)
-
-
+    
+    df_massive_attacks['model'] = df_massive_attacks['model'].str.split(' and ')    
+    df_massive_attacks = df_massive_attacks.explode('model')
+    df_massive_attacks['model'] = df_massive_attacks['model'].replace(['C-300', 'C-400'], 'C-300/C-400')
+    df_massive_attacks['model'] = df_massive_attacks['model'].replace(['Iskander-M', 'KN-23'], 'Iskander-M/KN-23')
+    df_massive_attacks['model'] = df_massive_attacks['model'].replace(['X-59', 'X-69', 'X-59/X-69\t'], 'X-59/X-69')
+    
 
 # Transform 'back_russia' column with replacing Nan value
 # if the value is zero, it means that nothing was returned back to russia
@@ -62,3 +62,10 @@ def load_and_process_data(file_path: str) -> pd.DataFrame:
 
     print(df_massive_attacks[0::100])
     return df_massive_attacks
+
+def merge_two_datas_by_model(df_missiles_daily: pd.DataFrame):
+    df_missiles_description = pd.read_csv("data/missiles_and_uav.csv")
+    df_missiles = df_missiles_daily.merge(df_missiles_description, how='left', on=['model'])
+    df_missiles = df_missiles.groupby(['category','model'], dropna=True)[['launched', 'destroyed']].sum()
+    df_missiles['reached_goal'] = df_missiles['launched'] - df_missiles['destroyed']
+    return df_missiles

@@ -1,9 +1,11 @@
-import './Header.css';
-
+import "./Header.css";
 export default function Header(){
-    return(
-        <header className='header'>
-            
-        </header>
-    )
-}
+    return(<div className ='header'>
+
+
+    </div>)
+} 
+
+
+
+
