@@ -12,3 +12,4 @@ ENV/
 env.bak/
 venv.bak/
 pip-selfcheck.json
+.DS_Store
