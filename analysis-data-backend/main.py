@@ -27,5 +27,6 @@ def main():
 
     plot_total_launched_and_destroyed_per_category_and_year(2024, "UAV", df_merged_with_categories)
 
+    plot_launched_vs_destroyed_by_model(df_massive_attacks)
 if __name__ == "__main__":
     main()

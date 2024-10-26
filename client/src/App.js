@@ -1,52 +1,19 @@
-// import './App.css';
-import React, {useState,  useEffect } from 'react'
+import React from 'react';
 import Header from './Header';
+import PlotStatByYear from './PlotStatByYear';
 
 function App() {
-
-  const [data, setData] = useState([{}])
-
- useEffect(() => {
-    fetch("/").then(
-      res => {
-        console.log("Response received:", res);
-        return res.json();
-      }
-    ).then(
-      data => {
-        setData(data)
-        console.log("Data received:", data)
-      }
-    ).catch(err => {
-      console.error("Error occurred:", err);
-    });
-}, [])
-
-
   return (
     <div>
-      <Header/>
-      {/* {(typeof data.members === 'underfined')} */}
+      <Header />
       <header className="App-header">
-        gg
       </header>
+      <br></br>
+      <PlotStatByYear
+        title = "Launched vs Destroyed Missiles"
+        apiUrl= "http://localhost:5000/graph2"
+      />
     </div>
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
   );
 }
 
