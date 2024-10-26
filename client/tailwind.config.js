@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {},
     colors: {
-      'green-button': "#55711B"
+      'green-button': "#3E5334",
+      'light-button': "#d8e8d1"
     }
   },
   plugins: [],

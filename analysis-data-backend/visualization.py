@@ -229,7 +229,7 @@ def chart_most_common_weapons_per_year(data: pd.DataFrame, year: int):
                                  hovertemplate="Model: %{label}<br>Percentage: %{percent}<extra></extra>",
                                  hole=0.5)])
 
-    fig.update_layout(title_text="Most common models of weapons")
+    # fig.update_layout(title_text="Most common models of weapons")
     return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     # fig.show()

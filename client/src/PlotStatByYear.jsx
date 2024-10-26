@@ -28,12 +28,12 @@ const PlotStatByYear = ({graphTitle, apiUrl}) => {
 
     return (
     <div>
-        <h3>{graphTitle}</h3>
+        <h1>{graphTitle}</h1>
         <div> 
             {years.map((year) => (
                 <button 
                     key={year} 
-                    className="bg-green-button text-white hover:bg-blue-700 text-white font-bold mr-20 py-2 px-4 rounded"
+                    className="bg-green-button text-light-button hover:bg-blue-700 font-bold mr-20 py-2 px-14 rounded"
                     onClick={() => handleYearChange(year)}>
                     {year}
                 </button>
@@ -44,7 +44,7 @@ const PlotStatByYear = ({graphTitle, apiUrl}) => {
             <Plot
                 data={graph.data}    
                 layout={graph.layout}
-                style={{ width: "100%", height: "600px" }}
+                style={{ width: "50%", height: "600px" }}
             />
         ) : ( <p>No data available</p> )
         )}
