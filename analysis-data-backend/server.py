@@ -4,8 +4,8 @@ from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
 from map_data_processing import load_and_process_map_data
 from map_visualization import shelling_map_visualization
-from data_processing import load_and_process_data
-from visualization import plot_total_launched_and_destroyed_per_year, chart_most_common_weapons_per_year
+from data_processing import load_and_process_data, merge_two_datas_by_model
+from visualization import plot_total_launched_and_destroyed_per_year, chart_most_common_weapons_per_year, chart_most_common_category_per_year
 
 app = Flask(__name__)
 CORS(app)  
@@ -34,6 +34,15 @@ def get_graph2():
     df_massive_attacks = load_and_process_data(file_path)
     year = request.args.get('year', default=2024, type=int)
     graph = chart_most_common_weapons_per_year(df_massive_attacks, year)
+    return jsonify(json.loads(graph))
+
+@app.route('/chart2')
+def get_chart2():
+    file_path = "data/missile_attacks_daily.csv"
+    df_massive_attacks = load_and_process_data(file_path)
+    df_merge = merge_two_datas_by_model(df_massive_attacks)
+    year = request.args.get('year', default=2024, type=int)
+    graph = chart_most_common_category_per_year(df_merge, year)
     return jsonify(json.loads(graph))
 
 @app.route("/ukraine_map", methods=['GET'])

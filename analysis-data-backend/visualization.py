@@ -196,12 +196,8 @@ def plot_launched_by_model_per_month(df: pd.DataFrame):
     )
     pyo.plot(fig, filename='missile_stats_offline.html')
 
-    # fig.show()
-
 def chart_most_common_weapons_per_year(data: pd.DataFrame, year: int):
     data_by_years = data[data["time_start"].dt.year == year]
-    # print(data_by_years.groupby(["model"]).count())
-
     counter = Counter(data_by_years["model"])
     top_10 = counter.most_common(10)
     total_count = len(data_by_years["model"])
@@ -216,9 +212,6 @@ def chart_most_common_weapons_per_year(data: pd.DataFrame, year: int):
     models.append("Other")
     percentages.append(100 - sum(percentages))
 
-    print(models)
-    print(percentages)
-
     colors = ["#2b472f", "#3e5334", "#4a6047", "#556a48", "#6d8162", "#718970",
               "#889a80", "#9fb29e", "#a6b899", "#c0cfc0", "#d8e8d1"]
 
@@ -228,11 +221,25 @@ def chart_most_common_weapons_per_year(data: pd.DataFrame, year: int):
                                  marker=dict(colors=colors),
                                  hovertemplate="Model: %{label}<br>Percentage: %{percent}<extra></extra>",
                                  hole=0.5)])
-
-    # fig.update_layout(title_text="Most common models of weapons")
     return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    # fig.show()
+def chart_most_common_category_per_year(df: pd.DataFrame, year:int):
+    data_by_years = df.xs(year, level='year')
+    category_sums = data_by_years.groupby('category')['launched'].sum().reset_index()
+    
+    labels = category_sums['category']
+    values = category_sums['launched']
+
+    colors = ["#2b472f", "#3e5334", "#4a6047", "#556a48", "#6d8162", "#718970",
+              "#889a80", "#9fb29e", "#a6b899", "#c0cfc0", "#d8e8d1"]
+
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values,
+                                 hoverinfo="label+percent",
+                                 textinfo="label+percent",
+                                 marker=dict(colors=colors),
+                                 hovertemplate="Category: %{label}<br>Percentage: %{percent}<extra></extra>",
+                                 hole=0.5)])
+    return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
 
 def plot_total_launched_and_destroyed_per_year(df: pd.DataFrame, year: int):
@@ -279,9 +286,7 @@ def plot_total_launched_and_destroyed_per_year(df: pd.DataFrame, year: int):
     ),
     showlegend=True,     
     )
-    # fig.write_html("../../static/interactiveCharts/linechart-plotly-basic.html")
-    fig.write_html("linechart-plotly-basic.html")
-    fig.show()
+    return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
 def plot_total_launched_and_destroyed_per_category_and_year(year: int, category: str, df: pd.DataFrame):
     grouped_data = df.xs((year, category), level=('year', 'category'))

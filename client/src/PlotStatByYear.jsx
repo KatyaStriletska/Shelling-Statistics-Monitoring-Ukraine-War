@@ -7,6 +7,7 @@ const PlotStatByYear = ({graphTitle, apiUrl}) => {
     const [loading, setLoading] = useState(false);
     const years = [2022, 2023, 2024];
     const fetchGraphData = (year) => {
+        console.log(`${apiUrl}?year=${year}`)
         fetch(`${apiUrl}?year=${year}`)
           .then((res) => res.json())
           .then((data) => {
@@ -33,7 +34,7 @@ const PlotStatByYear = ({graphTitle, apiUrl}) => {
             {years.map((year) => (
                 <button 
                     key={year} 
-                    className="bg-green-button text-light-button hover:bg-blue-700 font-bold mr-20 py-2 px-14 rounded"
+                    className="bg-green-button text-light-button hover:bg-blue-700 font-bold mr-20 py-2 px-14 "
                     onClick={() => handleYearChange(year)}>
                     {year}
                 </button>

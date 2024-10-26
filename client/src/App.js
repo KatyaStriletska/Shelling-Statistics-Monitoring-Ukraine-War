@@ -10,10 +10,14 @@ function App() {
       <header className="App-header">
       </header>
       <br></br>
-      <PlotStatByYear
-        title = "Launched vs Destroyed Missiles"
-        apiUrl= "http://localhost:5000/graph2"
-      />
+      <section className='weaponChart'>
+        <PlotStatByYear
+          title = "Launched vs Destroyed Missiles"
+          apiUrl= "http://localhost:5000/graph2"
+        />
+         
+      </section>
+
       <br></br>
       <PlotStatByYear
         title = "Launched vs Destroyed Missiles"
