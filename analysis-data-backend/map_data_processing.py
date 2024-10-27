@@ -14,6 +14,7 @@ def load_and_process_map_data() -> pd.DataFrame:
         "#meta+source": "source_headline",
         "#date+end": "source_date"
     }
+    data = data[data.get("where_prec") != 6]
     data = data.rename(columns=necessary_columns)
     data = data[list(necessary_columns.values())]
 
