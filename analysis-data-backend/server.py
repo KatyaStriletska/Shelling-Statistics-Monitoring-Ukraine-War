@@ -4,46 +4,66 @@ from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
 from map_data_processing import load_and_process_map_data
 from map_visualization import shelling_map_visualization
-from data_processing import load_and_process_data, merge_two_datas_by_model
-from visualization import plot_total_launched_and_destroyed_per_year, chart_most_common_weapons_per_year, chart_most_common_category_per_year
+from data_processing import load_and_process_data, get_data_of_weapon_by_year, get_categories_for_year, merge_two_data, get_category_of_weapon
+from visualization import plot_total_launched_and_destroyed_per_year, chart_most_common_weapons_per_year, chart_most_common_category_per_year, plot_total_launched_and_destroyed_per_launch_place, plot_total_launched_and_destroyed_per_category_and_year
 
 app = Flask(__name__)
 CORS(app)  
 
-@app.route('/')
-def members():
-    file_path = "data/missile_attacks_daily.csv"
-    df_massive_attacks = load_and_process_data(file_path)
-    year = request.args.get('year', default=2024, type=int)
+df_massive_attacks = None
+df_weapon_groupby_year = None
+map_data = None
 
-    graph = plot_total_launched_and_destroyed_per_year(df_massive_attacks, year)
-    return jsonify(json.loads(graph))
+
+def initialize_data():
+    global df_massive_attacks, df_weapon_groupby_year, map_data, df_weapon_group_by_category
+    df_massive_attacks = load_and_process_data()
+    df_megre = merge_two_data(df_massive_attacks)
+    df_weapon_groupby_year = get_data_of_weapon_by_year(df_megre)
+    df_weapon_group_by_category = get_category_of_weapon(df_megre)
+    map_data = load_and_process_map_data()
+    # categories = get_categories_for_year(2024)
 
 @app.route('/graph1')
 def get_graph1():
-    file_path = "data/missile_attacks_daily.csv"
-    df_massive_attacks = load_and_process_data(file_path)
     year = request.args.get('year', default=2024, type=int)
-
     graph = plot_total_launched_and_destroyed_per_year(df_massive_attacks, year)
     return jsonify(json.loads(graph))
 
 @app.route('/graph2')
 def get_graph2():
-    file_path = "data/missile_attacks_daily.csv"
-    df_massive_attacks = load_and_process_data(file_path)
+    year = request.args.get('year', default=2024, type=int)
+    category = request.args.get('category', default="UAV", type=str)
+    graph = plot_total_launched_and_destroyed_per_category_and_year(year, category, df_weapon_groupby_year)
+    return jsonify(json.loads(graph))
+
+@app.route("/graph_launch_place")
+def get_graph3():
+    return jsonify(json.loads(plot_total_launched_and_destroyed_per_launch_place(df_massive_attacks)))
+    
+@app.route('/graph2/getCategories')
+def get_categories():
+    year = request.args.get('year', default=2024, type=int)
+    categoriesForYear = get_categories_for_year(df_weapon_groupby_year, year)
+    return jsonify(categoriesForYear)
+
+
+@app.route('/chartModel')
+def get_chart1():
     year = request.args.get('year', default=2024, type=int)
     graph = chart_most_common_weapons_per_year(df_massive_attacks, year)
     return jsonify(json.loads(graph))
 
-@app.route('/chart2')
+@app.route('/chartCategory')
 def get_chart2():
-    file_path = "data/missile_attacks_daily.csv"
-    df_massive_attacks = load_and_process_data(file_path)
-    df_merge = merge_two_datas_by_model(df_massive_attacks)
     year = request.args.get('year', default=2024, type=int)
-    graph = chart_most_common_category_per_year(df_merge, year)
+    graph = chart_most_common_category_per_year(df_weapon_groupby_year, year)
     return jsonify(json.loads(graph))
+
+@app.route('/weapon_table')
+def get_weapon_table():
+    res = df_weapon_group_by_category.to_dict(orient= 'records')
+    return jsonify(res)
 
 @app.route("/ukraine_map", methods=['GET'])
 def get_ukraine_map():
@@ -53,7 +73,8 @@ def get_ukraine_map():
     ukraine_map.save(map_file)
     return send_file(map_file)
 
-    
+
     
 if __name__ == '__main__':
+    initialize_data()
     app.run(debug=True)

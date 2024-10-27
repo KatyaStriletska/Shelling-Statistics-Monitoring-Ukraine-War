@@ -1,18 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 import './index.css';
-const PlotStatByYear = ({graphTitle, apiUrl}) => {
-    const [graph, setGraph] = useState([{}]);
+const PlotStatByYear = ({apiUrl}) => {
+    const [chartModel, setChartModel] = useState([{}]);
+    const [chartCategory, setChartCategory] = useState([{}]);
+
     const [selectedYear, setSelectedYear] = useState(2024);
-    const [loading, setLoading] = useState(false);
+    const [loadingModel, setLoadingModel] = useState(false);
+    const [loadingCategory, setLoadingCategory] = useState(false);
+
     const years = [2022, 2023, 2024];
+
     const fetchGraphData = (year) => {
-        console.log(`${apiUrl}?year=${year}`)
-        fetch(`${apiUrl}?year=${year}`)
+        fetch(`${apiUrl}/chartModel?year=${year}`)
           .then((res) => res.json())
           .then((data) => {
-            setGraph(data);
-            setLoading(false);  
+            setChartModel(data);
+            setLoadingModel(false);  
+          })
+          .catch((err) => console.error("Error occurred:", err));
+        fetch(`${apiUrl}/chartCategory?year=${year}`)
+          .then((res) => res.json())
+          .then((data) => {
+            setChartCategory(data);
+            setLoadingCategory(false);  
           })
           .catch((err) => console.error("Error occurred:", err));
     };
@@ -22,33 +33,49 @@ const PlotStatByYear = ({graphTitle, apiUrl}) => {
     }, [selectedYear]);
     
     const handleYearChange = (year) => {
-        console.log(`click button ${year}`)
-        setLoading(true);
+        setLoadingCategory(true);
+        setLoadingModel(true);
         setSelectedYear(year);
     };
 
     return (
     <div>
-        <h1>{graphTitle}</h1>
-        <div> 
+        <div className='buttons'> 
             {years.map((year) => (
                 <button 
                     key={year} 
-                    className="bg-green-button text-light-button hover:bg-blue-700 font-bold mr-20 py-2 px-14 "
+                    className="bg-green-button text-light-button hover:bg-blue-700 font-bold mr-20 py-2 px-14 rounded"
                     onClick={() => handleYearChange(year)}>
                     {year}
                 </button>
             ))}
         </div>
-        {loading ? (<p>LOADING</p>) :(
-        graph.data ? (
-            <Plot
-                data={graph.data}    
-                layout={graph.layout}
-                style={{ width: "50%", height: "600px" }}
-            />
-        ) : ( <p>No data available</p> )
-        )}
+        <div className='weaponCharts'>
+            {loadingModel ? (<p>Loading...</p>) : (
+                chartModel ? (
+                    <div  className='chart'>
+                    <Plot 
+                        data = {chartModel.data}
+                        layout={chartModel.layout}
+                    />
+                    </div>
+                ) : ( <p>No data available</p> )
+            )}
+            {loadingCategory ? (<p>Loading...</p>) : (
+                chartCategory ? (
+                    <div className='chart'>
+                    <Plot
+                        data = {chartCategory.data}
+                        layout={chartCategory.layout}
+                        // style={{ width: "50%", height: "600px"}}
+                    />
+                    </div>
+                ) : ( <p>No data available</p> )
+            )}
+
+        </div>
+
+        
     </div>)
 }
 export default PlotStatByYear;

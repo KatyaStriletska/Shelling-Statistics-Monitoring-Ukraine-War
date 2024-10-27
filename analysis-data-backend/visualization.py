@@ -221,6 +221,7 @@ def chart_most_common_weapons_per_year(data: pd.DataFrame, year: int):
                                  marker=dict(colors=colors),
                                  hovertemplate="Model: %{label}<br>Percentage: %{percent}<extra></extra>",
                                  hole=0.5)])
+    fig.update_layout(title=f'Most common weapon per {year} year')
     return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
 def chart_most_common_category_per_year(df: pd.DataFrame, year:int):
@@ -230,15 +231,60 @@ def chart_most_common_category_per_year(df: pd.DataFrame, year:int):
     labels = category_sums['category']
     values = category_sums['launched']
 
-    colors = ["#2b472f", "#3e5334", "#4a6047", "#556a48", "#6d8162", "#718970",
+    colors = ["#2b472f", "#d8e8d1", "#556a48", "#6d8162", "#718970",
               "#889a80", "#9fb29e", "#a6b899", "#c0cfc0", "#d8e8d1"]
 
     fig = go.Figure(data=[go.Pie(labels=labels, values=values,
                                  hoverinfo="label+percent",
-                                 textinfo="label+percent",
+                                 textinfo="none",
                                  marker=dict(colors=colors),
                                  hovertemplate="Category: %{label}<br>Percentage: %{percent}<extra></extra>",
                                  hole=0.5)])
+    fig.update_layout(title=f'Most common weapon category per {year} year')
+    return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+def plot_total_launched_and_destroyed_per_launch_place(df: pd.DataFrame):
+
+    df_launch_place = df.groupby('launch_place').agg({
+        'launched': 'sum',
+        'destroyed': 'sum'
+    }).reset_index()
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(
+        x=df_launch_place['launch_place'],
+        y=df_launch_place['launched'],
+        mode='lines+markers',
+        name='Launched',  
+        line=dict(color='#3e5334'),  
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=df_launch_place['launch_place'],
+        y=df_launch_place['destroyed'],
+        mode='lines+markers',  
+        name='Destroyed',  
+        line=dict(color='#889a80'), 
+    ))
+
+    fig.update_layout(
+    title=f'Total launched and destroyed by launch place',  
+    xaxis_title='Month',  
+    yaxis_title='Count',  
+    # xaxis_tickmode='array', 
+    # xaxis_tickvals=list(range(1, 13)), 
+    plot_bgcolor='rgba(240, 240, 240, 0.8)',   
+    paper_bgcolor='rgba(255, 255, 255, 1)', 
+    xaxis_tickangle=-45,
+
+    # xaxis_ticktext= df_launch_place['launch_place'], 
+    hoverlabel=dict(
+        font_size=12,       
+        font_family="Arial" 
+    ),
+    showlegend=True,     
+    )
     return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
 
@@ -290,7 +336,6 @@ def plot_total_launched_and_destroyed_per_year(df: pd.DataFrame, year: int):
 
 def plot_total_launched_and_destroyed_per_category_and_year(year: int, category: str, df: pd.DataFrame):
     grouped_data = df.xs((year, category), level=('year', 'category'))
-
     if grouped_data.empty:
         print(f'No data available for {year} in category "{category}".')
         return
@@ -320,8 +365,6 @@ def plot_total_launched_and_destroyed_per_category_and_year(year: int, category:
                       xaxis_tickangle=-45,
                       plot_bgcolor='#f1f1ec' ,
                       barmode='group')
-
-    fig.show()
     return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
 

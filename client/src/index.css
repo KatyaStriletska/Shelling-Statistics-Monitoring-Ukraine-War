@@ -15,3 +15,42 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.weaponCharts{
+  display: flex;
+  flex: row; 
+  justify-content: space-between;
+  margin:5%
+  
+}
+.chart {
+  border: 2px solid lightGray;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  /* border: 2px solid lightGray; */
+  /* padding: 10px;   */
+  /* display: inline-block;  */
+} 
+.buttons{
+  display:flex;
+  margin-left: 30%;
+
+}
+.categories{
+  display:flex;
+  flex-direction: column;
+  margin-left:15px;
+  border: 2px solid lightGray;
+  padding: 25px 10px 0px 10px;
+  border-radius: 10px;
+}
+.categoriesGraph{
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+  justify-content: space-between;
+
+}
+.graphByCategory{
+  border: 2px solid lightGray;
+  padding: 25px 10px 0px 10px;
+
+}
