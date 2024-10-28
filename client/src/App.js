@@ -72,7 +72,7 @@ function App() {
           <br/>This ongoing conflict continues to highlight the devastating impact of war on civilians and the need for urgent humanitarian assistance. The data reflects not only the scale of military engagement but also the profound humanitarian crisis that has ensued, urging the international community to respond to the growing needs of affected populations.
           <br/>Below you can view statistics on total civilian casualties and select the year you are interested in.`}/>
       <CivilianDeathsComponent
-        apiUrl = "http://localhost:5000/civilian_deaths"
+        apiUrl = "http://127.0.0.1:5000/civilian_deaths"
       />
       <MapComponent/>
     </div>
