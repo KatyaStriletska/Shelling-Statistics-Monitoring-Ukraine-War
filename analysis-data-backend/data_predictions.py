@@ -44,11 +44,6 @@ def training_model_for_type(data: pd.DataFrame):
 
     joblib.dump(rf_model, 'data/rf_model.pkl')
 
-    # y_type_pred = rf_model.predict(X_test_type)
-
-    # print("Random Forest Accuracy for Model Prediction:", accuracy_score(y_test_type, y_type_pred))
-    # print("Classification Report (Random Forest for Model Prediction):\n", classification_report(y_test_type, y_type_pred))
-
 def training_model_for_propability(data: pd.DataFrame):
     X_prob = data[['year', 'launch_place', 'launched']]
     y_prob = data['destroyed'] > 0
@@ -60,13 +55,7 @@ def training_model_for_propability(data: pd.DataFrame):
 
     joblib.dump(rf, 'data/rf_model_prob.pkl')
 
-    y_prob_pred = rf.predict(X_test)
-    # accuracy = accuracy_score(y_test, y_prob_pred)
-    # report = classification_report(y_test, y_prob_pred)
-
-    # print("Random Forest Accuracy:", accuracy)
-    # print("Classification Report (Random Forest):\n", report)
-
+   
 def perform_prediction_for_model(year: int, launch_place: str, launched:int):
   rf_model = joblib.load('data/rf_model.pkl')
   new_data = pd.DataFrame({

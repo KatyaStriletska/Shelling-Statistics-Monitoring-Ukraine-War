@@ -1,16 +1,7 @@
 import json
 import os
-import sys
-from pathlib import Path
-import importlib.util
-
 from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
-sys.path.append(str(Path(__file__).resolve().parent / "analysis_data_backend"))
-module_path = Path(__file__).resolve().parent / "analysis_data_backend" / "map_data_processing.py"
-spec = importlib.util.spec_from_file_location("map_data_processing", module_path)
-map_data_processing = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(map_data_processing)
 from map_data_processing import load_and_process_map_data
 from map_visualization import shelling_map_visualization
 from data_processing import load_and_process_data, get_data_of_weapon_by_year, get_categories_for_year, merge_two_data, get_category_of_weapon

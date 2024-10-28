@@ -1,15 +1,12 @@
 import pandas as pd
 import numpy as np
 
-
+# preprocessing data for missile_attacks_daily.csv
 def load_and_process_data() -> pd.DataFrame:
     df_massive_attacks = pd.read_csv("data/missile_attacks_daily.csv")
 
-    # preprocessing data for missile_attacks_daily.csv
 
     # transform in correct type
-    # print(f"Data types before: \n {df_massive_attacks.dtypes} \nShape: {df_massive_attacks.shape}")
-
     def parse_datetime(val):
         val = val.strip() 
         try:
@@ -19,19 +16,7 @@ def load_and_process_data() -> pd.DataFrame:
         
     df_massive_attacks["time_start"] = df_massive_attacks["time_start"].apply(parse_datetime)
     df_massive_attacks["time_end"] = df_massive_attacks["time_end"].apply(parse_datetime)
-
-    # print(f"\nData types after: \n {df_massive_attacks.dtypes} \nShape: {df_massive_attacks.shape}")
-
-    # Checking for null/missing values
-    # print("\nSum of null/missing values: \n", df_massive_attacks.isnull().sum())
     df_massive_attacks = df_massive_attacks.drop(["launched_details", "launch_place_details", "still_attacking", "cross_border_belarus"],  axis=1)
-    # print("\nSum of null/missing values after dropping: \n", df_massive_attacks.isnull().sum())
-
-# Checking for duplicate values
-# print(f"Duplicate values: {df_massive_attacks.duplicated().sum()}")
-# print(f"Shape after drpopping: {df_massive_attacks.shape}")
-
-# print(df_massive_attacks.describe())
 
     # Transform empty 'launch_place' values 
     df_massive_attacks['launch_place'] = df_massive_attacks['launch_place'].str.split(' and ')
