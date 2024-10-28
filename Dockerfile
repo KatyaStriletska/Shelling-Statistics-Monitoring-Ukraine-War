@@ -7,6 +7,7 @@ WORKDIR /app/client
 # Copy package.json and install dependencies
 COPY client/package*.json ./
 RUN npm install
+RUN npm install plotly
 
 # Copy the entire React app source code and build it
 COPY client/ .
