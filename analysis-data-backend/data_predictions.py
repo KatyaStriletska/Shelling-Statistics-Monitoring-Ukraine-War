@@ -38,7 +38,7 @@ def training_model_for_type(data: pd.DataFrame):
     rf_model = RandomForestClassifier(n_estimators=70, random_state=42)
     rf_model.fit(X_train_type, y_train_type)
 
-    joblib.dump(rf_model, '/data/rf_model.pkl')
+    joblib.dump(rf_model, 'data/rf_model.pkl')
 
     # y_type_pred = rf_model.predict(X_test_type)
 
@@ -54,7 +54,7 @@ def training_model_for_propability(data: pd.DataFrame):
     rf = RandomForestClassifier(n_estimators=100)
     rf.fit(X_train, y_train)
 
-    joblib.dump(rf, '/data/rf_model_prob.pkl')
+    joblib.dump(rf, 'data/rf_model_prob.pkl')
 
     y_prob_pred = rf.predict(X_test)
     # accuracy = accuracy_score(y_test, y_prob_pred)
@@ -64,7 +64,7 @@ def training_model_for_propability(data: pd.DataFrame):
     # print("Classification Report (Random Forest):\n", report)
 
 def perform_prediction_for_model(year: int, launch_place: str, launched:int):
-  rf_model = joblib.load('/data/rf_model.pkl')
+  rf_model = joblib.load('data/rf_model.pkl')
   new_data = pd.DataFrame({
       'year': [year],
       'launch_place': [launch_place],
@@ -81,7 +81,7 @@ def perform_prediction_for_model(year: int, launch_place: str, launched:int):
 
 
 def perform_probability_prediction(year: int, launch_place: str, launched: int):
-    rf_model = joblib.load('/data/rf_model_prob.pkl')
+    rf_model = joblib.load('data/rf_model_prob.pkl')
     
     new_data = pd.DataFrame({
         'year': [year],
