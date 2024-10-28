@@ -6,7 +6,7 @@ from map_data_processing import load_and_process_map_data
 from map_visualization import shelling_map_visualization
 from data_processing import load_and_process_data, get_data_of_weapon_by_year, get_categories_for_year, merge_two_data, get_category_of_weapon
 from visualization import plot_total_launched_and_destroyed_per_year, chart_most_common_weapons_per_year, chart_most_common_category_per_year, plot_total_launched_and_destroyed_per_launch_place, plot_total_launched_and_destroyed_per_category_and_year
-
+from data_predictions import preprocessing_for_prediction, training_model_for_type, training_model_for_propability, perform_prediction_for_model, perform_probability_prediction
 app = Flask(__name__)
 CORS(app)  
 
@@ -22,6 +22,9 @@ def initialize_data():
     df_weapon_groupby_year = get_data_of_weapon_by_year(df_megre)
     df_weapon_group_by_category = get_category_of_weapon(df_megre)
     map_data = load_and_process_map_data()
+    df_prediction = preprocessing_for_prediction(df_massive_attacks)
+    training_model_for_propability(df_prediction)
+    training_model_for_type(df_prediction)
     # categories = get_categories_for_year(2024)
 
 @app.route('/graph1')
@@ -73,7 +76,17 @@ def get_ukraine_map():
     ukraine_map.save(map_file)
     return send_file(map_file)
 
-
+@app.route("/predictions")
+def ger_different_predictions():
+    year = request.args.get('year', default=2024, type=int)
+    launched_place = request.args.get('place', default="Crimea", type=str)
+    launched = request.args.get('launched', default=3, type=int)
+    weapon_name = perform_prediction_for_model(year, launched_place, launched)
+    probability = perform_probability_prediction(year, launched_place, launched)*100
+    return jsonify([{
+        "name": weapon_name,
+        "probability": probability
+    }])
     
 if __name__ == '__main__':
     initialize_data()

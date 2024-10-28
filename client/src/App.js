@@ -6,6 +6,8 @@ import GraphLaunchedDestroyedComponent from './GraphLaunchedDestroyedComponent';
 import GraphLaunchDestrPerCategoryComponent from './GraphLaunchDestrPerCategoryComponent';
 import GraphLaunchPlace from './GraphLaunchPlaceComponent';
 import WeaponTable from './WeaponTableComponent';
+import PredictionComponent from './PredictionComponent';
+
 function App() {
   return (
     <div>
@@ -40,6 +42,11 @@ function App() {
       <div>
         <GraphLaunchPlace
           apiUrl = "http://localhost:5000/graph_launch_place"
+        />
+      </div>
+      <div>
+        <PredictionComponent
+        apiUrl = "http://localhost:5000/predictions"
         />
       </div>
 
