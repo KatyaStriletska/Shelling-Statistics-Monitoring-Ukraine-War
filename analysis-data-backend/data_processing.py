@@ -76,6 +76,7 @@ def merge_two_data(df_missiles_daily: pd.DataFrame):
     df_missiles_daily["year"] = df_missiles_daily["time_start"].dt.year
 
     df_missiles = df_missiles_daily.merge(df_missiles_description, how='left', on=['model'])
+    
     return df_missiles
 
 def get_data_of_weapon_by_year(df_missiles: pd.DataFrame):

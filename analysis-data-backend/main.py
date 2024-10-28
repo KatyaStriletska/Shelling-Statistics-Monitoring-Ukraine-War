@@ -10,7 +10,9 @@ def main():
     merged_df = merge_two_data(main_df)
     df_category_of_weapon = get_category_of_weapon(merged_df)
     df_weapon_by_year = get_data_of_weapon_by_year(merged_df)
-    print(df_category_of_weapon.head(10))
+    print("Sum ", main_df['launched'].sum())
+
+    print(main_df.head(10))
     print(df_weapon_by_year.head(10))
 if __name__ == "__main__":
     main()

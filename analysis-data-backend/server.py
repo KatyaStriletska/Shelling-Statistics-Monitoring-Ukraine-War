@@ -21,8 +21,6 @@ def initialize_data():
     df_megre = merge_two_data(df_massive_attacks)
     df_weapon_groupby_year = get_data_of_weapon_by_year(df_megre)
     df_weapon_group_by_category = get_category_of_weapon(df_megre)
-    map_data = load_and_process_map_data()
-    # categories = get_categories_for_year(2024)
 
 @app.route('/graph1')
 def get_graph1():
@@ -67,8 +65,8 @@ def get_weapon_table():
 
 @app.route("/ukraine_map", methods=['GET'])
 def get_ukraine_map():
-    data = load_and_process_map_data()
-    ukraine_map = shelling_map_visualization(data)
+    # data = load_and_process_map_data()
+    ukraine_map = shelling_map_visualization(df_massive_attacks)
     map_file = os.path.join(os.getcwd(), "ukraine_shelling_map.html")
     ukraine_map.save(map_file)
     return send_file(map_file)

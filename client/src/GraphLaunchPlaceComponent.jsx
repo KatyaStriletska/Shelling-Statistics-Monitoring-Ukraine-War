@@ -22,7 +22,9 @@ export default function GraphLaunchPlace({apiUrl}){
 
     return (
     <div>
-        <h1>SOME TITLE</h1>
+        <div className='label-container'>
+            <h1 className='mb-4 mt-10 text-4xl font-extrabold leading-none tracking-tight text-green-button md:text-5xl lg:text-4xl dark:text-white'>Total launched and destroyed by launch place</h1>
+        </div>
             {loading ? (<p>Loading...</p>) : (
                 graphData ? (
                    

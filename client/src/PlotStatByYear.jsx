@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Plot from 'react-plotly.js';
 import './index.css';
+
 const PlotStatByYear = ({apiUrl}) => {
     const [chartModel, setChartModel] = useState([{}]);
     const [chartCategory, setChartCategory] = useState([{}]);
@@ -40,11 +41,20 @@ const PlotStatByYear = ({apiUrl}) => {
 
     return (
     <div>
+        <div className='label-container'>
+            <h1 className='mb-4 text-4xl font-extrabold leading-none tracking-tight text-green-button md:text-5xl lg:text-4xl dark:text-white'>
+                The most common categories of weapons and weapons by year
+            </h1>
+        </div>
         <div className='buttons'> 
             {years.map((year) => (
                 <button 
                     key={year} 
-                    className="bg-green-button text-light-button hover:bg-blue-700 font-bold mr-20 py-2 px-14 rounded"
+                    className={`${
+                        selectedYear === year
+                            ? "custom-button"
+                            : "bg-green-button hover:bg-blue-700"
+                    } text-light-button font-bold mr-20 py-2 px-14 rounded`}                
                     onClick={() => handleYearChange(year)}>
                     {year}
                 </button>
@@ -67,7 +77,6 @@ const PlotStatByYear = ({apiUrl}) => {
                     <Plot
                         data = {chartCategory.data}
                         layout={chartCategory.layout}
-                        // style={{ width: "50%", height: "600px"}}
                     />
                     </div>
                 ) : ( <p>No data available</p> )
