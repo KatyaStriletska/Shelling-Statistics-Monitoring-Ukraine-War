@@ -17,7 +17,7 @@ RUN npm run build
 FROM python:3.10
 
 # Set working directory in the backend
-WORKDIR /app
+WORKDIR /analysis-data-backend
 
 # Copy and install backend dependencies
 COPY requirements.txt .
@@ -33,5 +33,5 @@ EXPOSE 5000
 # ENV FLASK_ENV=production
 
 # Start the Flask application
-CMD ["gunicorn", "-b", "127.0.0.1:5000", "app:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
 
