@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import PlotStatByYear from './PlotStatByYear';
 import MapComponent from './MapComponent';
@@ -11,6 +11,22 @@ import './index.css'
 import PredictionComponent from './PredictionComponent';
 
 function App() {
+  const [launchPlaces, setLaunchPlaces] = useState([])
+
+  const fetchLaunchPlaces = () =>{
+    fetch(`http://127.0.0.1:5000/get_launched_place`)
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(launchPlaces)
+            setLaunchPlaces(data)
+
+        })
+        .catch((err) => console.log("Error fetching categories:", err));
+  }
+  useEffect(() => {
+    fetchLaunchPlaces();
+  }, []);
+
   return (
     <div>
       <Header />
@@ -56,7 +72,8 @@ function App() {
       </div>
       <div>
         <PredictionComponent
-        apiUrl = "http://localhost:5000/predictions"
+          places = {launchPlaces}
+          apiUrl = "http://localhost:5000/predictions"
         />
       </div>
 

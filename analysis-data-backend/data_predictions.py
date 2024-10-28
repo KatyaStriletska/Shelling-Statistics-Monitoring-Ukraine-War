@@ -21,7 +21,7 @@ def preprocessing_for_prediction(df: pd.DataFrame) -> pd.DataFrame:
     for val in categorical_values:
         data[val] = data[val].astype('category')
     
-    launch_place_categories = data['launch_place'].cat.categories
+    launch_place_categories = data['launch_place'].cat.categories.to_list()    
     model_categories = data['model'].cat.categories
 
     cat_columns = data.select_dtypes(['category']).columns
@@ -29,6 +29,10 @@ def preprocessing_for_prediction(df: pd.DataFrame) -> pd.DataFrame:
     
     return data
 
+def get_launch_place_categories():
+    return launch_place_categories
+    
+    
 def training_model_for_type(data: pd.DataFrame):
     X_type = data[['year', 'launch_place', 'launched']]
     y_type = data['model']
