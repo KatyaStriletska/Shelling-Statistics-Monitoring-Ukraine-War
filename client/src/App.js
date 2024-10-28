@@ -8,6 +8,8 @@ import GraphLaunchPlace from './GraphLaunchPlaceComponent';
 import WeaponTable from './WeaponTableComponent';
 import ArticleComponent from './ArticleComponent';
 import './index.css'
+import PredictionComponent from './PredictionComponent';
+
 function App() {
   return (
     <div>
@@ -51,6 +53,11 @@ function App() {
           apiUrl = "http://localhost:5000/graph_launch_place"
         />
 
+      </div>
+      <div>
+        <PredictionComponent
+        apiUrl = "http://localhost:5000/predictions"
+        />
       </div>
 
       <br></br>
