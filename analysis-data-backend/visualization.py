@@ -197,3 +197,40 @@ def plot_total_launched_and_destroyed_per_category_and_year(year: int, category:
                       plot_bgcolor='#f1f1ec' ,
                       barmode='group')
     return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+def plot_civilian_deaths_over_time(df: pd.DataFrame, year: int):
+    df['date_start'] = pd.to_datetime(df['date_start'], errors='coerce')
+    df_year = df[df['date_start'].dt.year == year]
+    
+    df_year['month'] = df_year['date_start'].dt.month
+    monthly_deaths = df_year.groupby('month')['deaths_civilians'].sum().reset_index()
+    
+    line_color = '#3e5334'
+    marker_color = '#889a80'
+    bg_color = 'rgba(255, 255, 255, 1)'
+    plot_bg_color = 'rgba(240, 240, 240, 0.8)'
+    
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=monthly_deaths['month'],
+        y=monthly_deaths['deaths_civilians'],
+        mode='lines+markers',
+        name='Deaths of civilians',
+        line=dict(color=line_color, width=2),
+        marker=dict(color=marker_color, size=8),
+        hovertemplate="Month: %{x}<br>Deaths: %{y}<extra></extra>"
+    ))
+
+    fig.update_layout(
+        xaxis_title='Month',
+        yaxis_title='Total Civilian Deaths',
+        xaxis=dict(tickmode='array', tickvals=list(range(1, 13)), ticktext=[
+                   'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']),
+        plot_bgcolor=plot_bg_color,
+        paper_bgcolor=bg_color,
+        xaxis_tickangle=-45,
+        hoverlabel=dict(font_size=12, font_family="Arial"),
+        showlegend=True,
+    )
+
+    return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
