@@ -19,7 +19,7 @@ FROM python:3.10
 WORKDIR /app
 
 # Copy and install backend dependencies
-COPY analysis-data-backend/requirements.txt .
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Copy Flask app code into the container
