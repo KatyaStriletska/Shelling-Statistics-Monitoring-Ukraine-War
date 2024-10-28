@@ -17,14 +17,14 @@ RUN npm run build
 FROM python:3.10
 
 # Set working directory in the backend
-WORKDIR /analysis-data-backend
+WORKDIR /
 
 # Copy and install backend dependencies
-COPY requirements.txt .
+COPY requirements.txt
 RUN pip install -r requirements.txt
 
 # Copy Flask app code into the container
-COPY analysis-data-backend/ .
+COPY /analysis-data-backend
 
 # Expose the port Flask will run on
 EXPOSE 5000
