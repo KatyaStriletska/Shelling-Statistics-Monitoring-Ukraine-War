@@ -1,20 +1,39 @@
-# Use the official Python image as the base image
-FROM python:3.9.6
+# Stage 1: Build React app
+FROM node:18 AS frontend-build
 
-# Set the working directory
+# Set working directory in the frontend
+WORKDIR /app/client
+
+# Copy package.json and install dependencies
+COPY client/package*.json ./
+RUN npm install
+
+# Copy the entire React app source code and build it
+COPY client/ .
+RUN npm run build
+
+# Stage 2: Set up Flask backend with the React build
+FROM python:3.10
+
+# Set working directory in the backend
 WORKDIR /app
 
-# Copy the requirements file into the container
-COPY requirements.txt .
-
-# Install the required Python packages
+# Copy and install backend dependencies
+COPY analysis-data-backend/requirements.txt .
 RUN pip install -r requirements.txt
 
-# Copy the rest of the application code into the container
-COPY . .
+# Copy Flask app code into the container
+COPY analysis-data-backend/ .
 
-# Expose the port that your Flask app listens on
+# Copy the React build files from the previous stage to the Flask static folder
+COPY --from=frontend-build /app/client/build ./static
+
+# Expose the port Flask will run on
 EXPOSE 5000
 
-# Start the Flask app
-CMD ["python", "analysis-data-backend/app.py"]
+# Set environment variables if needed
+# ENV FLASK_ENV=production
+
+# Start the Flask application
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
+
