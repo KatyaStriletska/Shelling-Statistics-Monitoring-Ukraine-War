@@ -2,7 +2,7 @@
 FROM node:18 AS frontend-build
 
 # Set working directory in the frontend
-WORKDIR /app/client
+WORKDIR /client
 
 # Copy package.json and install dependencies
 COPY client/package*.json ./
