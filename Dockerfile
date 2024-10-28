@@ -20,11 +20,11 @@ FROM python:3.10
 WORKDIR /
 
 # Copy and install backend dependencies
-COPY requirements.txt
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # Copy Flask app code into the container
-COPY /analysis-data-backend
+COPY . .
 
 # Expose the port Flask will run on
 EXPOSE 5000
