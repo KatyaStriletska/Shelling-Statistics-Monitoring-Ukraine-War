@@ -102,4 +102,4 @@ def get_launched_place():
     
 if __name__ == '__main__':
     initialize_data()
-    app.run(debug=True)
+    app.run(host='0.0.0.0')
