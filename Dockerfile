@@ -26,9 +26,6 @@ RUN pip install -r requirements.txt
 # Copy Flask app code into the container
 COPY analysis-data-backend/ .
 
-# Copy the React build files from the previous stage to the Flask static folder
-COPY --from=frontend-build /app/client/build ./static
-
 # Expose the port Flask will run on
 EXPOSE 5000
 
