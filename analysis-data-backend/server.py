@@ -21,7 +21,7 @@ def initialize_data():
     df_megre = merge_two_data(df_massive_attacks)
     df_weapon_groupby_year = get_data_of_weapon_by_year(df_megre)
     df_weapon_group_by_category = get_category_of_weapon(df_megre)
-    map_data = load_and_process_map_data()
+    # map_data = load_and_process_map_data()
     df_prediction = preprocessing_for_prediction(df_massive_attacks)
     training_model_for_propability(df_prediction)
     training_model_for_type(df_prediction)
