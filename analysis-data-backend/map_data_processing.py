@@ -26,4 +26,6 @@ def load_and_process_map_data() -> pd.DataFrame:
     data['date_start'] = pd.to_datetime(data['date_start'], errors='coerce')
     data = data[(data['date_start'] >= '2022-02-24')]
 
+    data['deaths_civilians'] = pd.to_numeric(data['deaths_civilians'], errors='coerce')
+
     return data
