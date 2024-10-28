@@ -1,38 +1,24 @@
 # Stage 1: Build React app
 FROM node:18 AS frontend-build
 
-# Set working directory in the frontend
-WORKDIR /client
-
-# Copy package.json and install dependencies
+WORKDIR /app/client
 COPY client/package*.json ./
 RUN npm install
-RUN npm install plotly
-
-# Copy the entire React app source code and build it
 COPY client/ .
 RUN npm run build
 
-# Stage 2: Set up Flask backend with the React build
+# Stage 2: Set up Flask backend with React build
 FROM python:3.10
+WORKDIR /app
 
-# Set working directory in the backend
-WORKDIR /
-
-# Copy and install backend dependencies
-COPY requirements.txt .
+# Copy backend files
+COPY analysis-data-backend/ .
 RUN pip install -r requirements.txt
 
-# Copy Flask app code into the container
-COPY . .
+# Copy React build files directly into the specified static folder
+COPY --from=frontend-build /app/client/build /app/client/build
 
-# Expose the port Flask will run on
 EXPOSE 5000
 
-# Set environment variables if needed
-# ENV FLASK_ENV=production
-
-# Start the Flask application
-# CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
-CMD ["python", "analysis-data-backend/app.py"]
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"
 
