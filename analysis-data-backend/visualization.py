@@ -6,37 +6,6 @@ import plotly.utils
 import matplotlib.pyplot as plt
 import plotly.offline as pyo
 
-def plot_launched_by_model_per_month(df: pd.DataFrame):
-    # Додавання місяця
-    df['month'] = df['time_start'].dt.to_period('M')
-    
-    # Групування по моделям і місяцям
-    model_month_stats = df.groupby(['month', 'model']).agg({
-        'launched': 'sum'
-    }).reset_index()
-    
-    fig = go.Figure()
-    
-    # Додавання ліній для кожної моделі
-    for model in model_month_stats['model'].unique():
-        model_data = model_month_stats[model_month_stats['model'] == model]
-        fig.add_trace(go.Scatter(
-            x=model_data['month'].astype(str), 
-            y=model_data['launched'], 
-            mode='lines+markers',
-            name=model
-        ))
-    
-    fig.update_layout(
-        title='Launched Missiles per Month by Model',
-        xaxis_title='Month',
-        yaxis_title='Launched',
-        showlegend=True,
-        xaxis_tickmode='array',
-        xaxis_tickvals=model_month_stats['month'].astype(str).unique(),
-    )
-    pyo.plot(fig, filename='missile_stats_offline.html')
-
 def chart_most_common_weapons_per_year(data: pd.DataFrame, year: int):
     data_by_years = data[data["time_start"].dt.year == year]
     counter = Counter(data_by_years["model"])

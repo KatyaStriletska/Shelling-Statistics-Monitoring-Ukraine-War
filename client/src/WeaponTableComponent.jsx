@@ -20,17 +20,35 @@ export default function WeaponTable({apiUrl}){
    }, [])
 
    return (
-    <div>
-        <div className="table-container">
+    <div className="table-container">
+        {data.map((item, index) => (
+            <table >
+                <thead>
+                    <tr>
+                        <th >Category</th>
+                    <th >Model</th>
+                </tr>
+            </thead>
+            <tbody key={`${item.category}-${index}`}>
+                    {item.model.map((model, modelIndex) => (
+                            <tr key={modelIndex}>
+                                <td >{modelIndex === 0 ? item.category : ''}</td>
+                                <td>{model}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+        </table>
+        ))}
+
+
+        {/* <div className="table-container">
             <table >
                 <thead>
                     <tr>
                         <th >
                         Category
-                            {/* <p className="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">Category</p> */}
                         </th>
                         <th >Model
-                            {/* <p className="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">Model</p> */}
                         </th>
                     </tr>
                     
@@ -49,7 +67,7 @@ export default function WeaponTable({apiUrl}){
                     }
                              
             </table>
-        </div>
+        </div> */}
         
 
 

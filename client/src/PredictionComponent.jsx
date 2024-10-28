@@ -4,6 +4,7 @@ export default function PredictionComponent({places, apiUrl}){
     const [selectedYear, setSelectedYear] = useState(2022)
     const [selectedPlace, setSelectedPlace] = useState("Black Sea")
     const [selectedLaunched, setSelectedLaunched] = useState(5)
+    const [loading, setLoading] = useState(true)
     const [result, setResult] = useState ([])
     const years = [2022, 2023, 2024];
 
@@ -11,21 +12,14 @@ export default function PredictionComponent({places, apiUrl}){
         fetch(`${apiUrl}?year=${year}&place=${place}&launched=${launched}`)
             .then((res) => res.json())
             .then((data) => {
-                console.log(data)
                 setResult(data)
+                setLoading(false)
             })
             .catch((err) => console.log("Error fetching categories:", err));
     }
     useEffect(() => {
         fetchPred(selectedYear, selectedPlace, selectedLaunched)
     }, [selectedYear, selectedPlace, selectedLaunched]);
-    
-    const handleYearChange = (year) =>{
-        setSelectedYear(year)
-    }
-    console.log(selectedPlace)
-    console.log(selectedLaunched)
-    console.log( result)
 
     return(
         <div >
@@ -51,7 +45,6 @@ export default function PredictionComponent({places, apiUrl}){
                             ))}
                         </select>
                     </div>
-                    {/* <form className="max-w-sm mx-auto"> */}
                     <div className='select-place-container'>
                         <label htmlFor="place" className="block mb-2 text-lg font-medium text-dark-green dark:text-white">Select an option</label>
                         <select 
@@ -78,14 +71,18 @@ export default function PredictionComponent({places, apiUrl}){
                                 onChange={e => setSelectedLaunched(e.target.value)}
                                 aria-describedby="helper-text-explanation" 
                                 className="mb-4 bg-gray-50 border border-white text-gray-900 text-m rounded-lg focus:ring-blue-5 focus:border-white-500 block w-[300px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                // placeholder="90210" 
                                 required 
                         ></input>
                     </div>
                 </div>
                 <div className='prediction-result-container'>
-                    <p>The most likely to be patched is the <b>{result[0].name}</b>.</p> 
-                    <p>The probability that it will be shot down : <b>{result[0].probability.toFixed(2)}%</b>.</p>
+                    {loading ? (<p>Loading</p>) : (
+                        <div>
+                            <p>The most likely to be patched is the <b>{result[0].name}</b>.</p> 
+                            <p>The probability that it will be shot down : <b>{result[0].probability.toFixed(2)}%</b>.</p>
+                        </div>
+                    )}
+                    
                 </div>   
             </div>
             

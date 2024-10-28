@@ -5,7 +5,7 @@ from flask_cors import CORS
 from map_data_processing import load_and_process_map_data
 from map_visualization import shelling_map_visualization
 from data_processing import load_and_process_data, get_data_of_weapon_by_year, get_categories_for_year, merge_two_data, get_category_of_weapon
-from visualization import plot_total_launched_and_destroyed_per_year, chart_most_common_weapons_per_year, chart_most_common_category_per_year, plot_total_launched_and_destroyed_per_launch_place, plot_total_launched_and_destroyed_per_category_and_year
+from visualization import plot_civilian_deaths_over_time, plot_total_launched_and_destroyed_per_year, chart_most_common_weapons_per_year, chart_most_common_category_per_year, plot_total_launched_and_destroyed_per_launch_place, plot_total_launched_and_destroyed_per_category_and_year
 from data_predictions import get_launch_place_categories, preprocessing_for_prediction,  training_model_for_type, training_model_for_propability, perform_prediction_for_model, perform_probability_prediction
 app = Flask(__name__)
 CORS(app)  
@@ -22,6 +22,7 @@ def initialize_data():
     df_weapon_groupby_year = get_data_of_weapon_by_year(df_megre)
     df_weapon_group_by_category = get_category_of_weapon(df_megre)
     df_prediction = preprocessing_for_prediction(df_massive_attacks)
+    map_data = load_and_process_map_data()
     training_model_for_propability(df_prediction)
     training_model_for_type(df_prediction)
 
@@ -68,8 +69,7 @@ def get_weapon_table():
 
 @app.route("/ukraine_map", methods=['GET'])
 def get_ukraine_map():
-    # data = load_and_process_map_data()
-    ukraine_map = shelling_map_visualization(df_massive_attacks)
+    ukraine_map = shelling_map_visualization(map_data)
     map_file = os.path.join(os.getcwd(), "ukraine_shelling_map.html")
     ukraine_map.save(map_file)
     return send_file(map_file)
@@ -85,6 +85,12 @@ def ger_different_predictions():
         "name": weapon_name,
         "probability": probability
     }])
+    
+@app.route("/civilian_deaths")
+def get_civilian_deaths():
+    year = request.args.get('year', default=2024, type=int)
+    graph = plot_civilian_deaths_over_time(map_data, year)
+    return jsonify(json.loads(graph))
     
 @app.route('/get_launched_place')
 def get_launched_place():

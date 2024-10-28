@@ -134,10 +134,11 @@ tbody td:first-child {
   color: #111827;
 }
 .table-container{
-  display: flex;
-  justify-content: center;
   width: 400px;
-    margin-right: 2%;
+  margin-left: 15%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .weapon-table-container{

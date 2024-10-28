@@ -55,7 +55,8 @@ const PlotStatByYear = ({apiUrl}) => {
                             ? "custom-button"
                             : "bg-green-button hover:bg-blue-700"
                     } text-light-button font-bold mr-20 py-2 px-14 rounded`}                
-                    onClick={() => handleYearChange(year)}>
+                    onClick={() => handleYearChange(year)}
+                    disabled={selectedYear === year}>
                     {year}
                 </button>
             ))}

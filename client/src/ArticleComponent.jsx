@@ -3,9 +3,7 @@ export default function ArticleComponent({text}){
 
     return (
         <div className="article-container">
-            <article>
-               {text}
-            </article>
+            <div dangerouslySetInnerHTML={{ __html: text }} />
         </div>
     )
 }
