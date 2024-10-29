@@ -11,7 +11,7 @@ const GraphLaunchDestrPerCategoryComponent = ({apiUrl}) => {
     const years = [2022, 2023, 2024];
     const fetchGraphData = (year, category) => {
         setLoading(true)
-        fetch(`${apiUrl}?year=${year}&category=${category}`)
+        fetch(`${apiUrl}?year=${year}&category=${category}`, {mode: 'cors'})
           .then((res) => res.json())
           .then((data) => {
             setGgraphData(data);
@@ -20,7 +20,7 @@ const GraphLaunchDestrPerCategoryComponent = ({apiUrl}) => {
           .catch((err) => console.error("Error occurred:", err));
     };
     const fetchCategories = (year) =>{
-        fetch(`${apiUrl}/getCategories?year=${year}`)
+        fetch(`${apiUrl}/getCategories?year=${year}`, {mode: 'cors'})
             .then((res) => res.json())
             .then((data) => {
                 setAllCategories(data)
