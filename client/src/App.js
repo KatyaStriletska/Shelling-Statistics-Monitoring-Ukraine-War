@@ -36,7 +36,7 @@ function App() {
         text = "The ongoing Russo-Ukrainian War began in February 2014. Following Ukraine's Revolution of Dignity, Russia occupied and annexed Crimea from Ukraine and supported pro-Russian separatists fighting the Ukrainian military in the Donbas War. These first eight years of conflict also included naval incidents and cyberwarfare. In February 2022, Russia launched a full-scale invasion of Ukraine and began occupying more of the country, starting the biggest conflict in Europe since World War II. The war has resulted in a refugee crisis and tens of thousands of deaths. Since the beginning of the full-scale invasion, Russia has launched more than 25,000 ballistic missiles, cruise missiles, guided bombs, surface-to-air missiles, and UAVs against various targets. This extensive use of aerial and missile weaponry has targeted critical infrastructure, civilian areas, and military installations, causing significant destruction and casualties. "
       />
       <GraphLaunchedDestroyedComponent
-        apiUrl = "https://shelling-statistics-monitoring-ukraine-v9i0.onrender.com/graph1"
+        apiUrl = "http://shelling-statistics-monitoring-ukraine-v9i0:5000/graph1"
       />
       <ArticleComponent
         text = "The following charts provide a detailed breakdown of the types and categories of weapons used, including ballistic missiles, cruise missiles, guided bombs, surface-to-air missiles, and unmanned aerial vehicles (UAVs). Each chart categorizes these weapons by model and type, offering insight into the distribution and frequency of use behind the choices in the Russian arsenal. This analysis highlights the diversity and intensity of the weapons systems deployed, emphasizing the range of military technologies employed throughout the conflict. To filter the data, please select a year using the buttons below."
@@ -48,13 +48,13 @@ function App() {
       </section>
      
       <GraphLaunchDestrPerCategoryComponent
-        apiUrl = "https://shelling-statistics-monitoring-ukraine-v9i0.onrender.com/graph2"  
+        apiUrl = "http://127.0.0.1:5000/graph2"  
       />
       <ArticleComponent
         text= "The tables below summarize the main categories and models of weapons that have been observed during the conflict. These include unmanned aerial vehicles (UAVs), ballistic missiles, and cruise missiles. The UAV (unmanned aerial vehicle) category includes various models such as the Shahed-136/131, Orlan-10, Lancet and others used for reconnaissance, targeting and strike operations. Also represented are ballistic and cruise missiles, such as the Iskander-M and X-59/X-69, which are typically used to strike strategically important targets."
       />
       <WeaponTable
-        apiUrl = "https://shelling-statistics-monitoring-ukraine-v9i0.onrender.com/weapon_table"
+        apiUrl = "http://127.0.0.1:5000/weapon_table"
       />
   
       <ArticleComponent
