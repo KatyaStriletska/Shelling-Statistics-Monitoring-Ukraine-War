@@ -8,7 +8,7 @@ from data_processing import load_and_process_data, get_data_of_weapon_by_year, g
 from visualization import plot_civilian_deaths_over_time, plot_total_launched_and_destroyed_per_year, chart_most_common_weapons_per_year, chart_most_common_category_per_year, plot_total_launched_and_destroyed_per_launch_place, plot_total_launched_and_destroyed_per_category_and_year
 from data_predictions import get_launch_place_categories, preprocessing_for_prediction,  training_model_for_type, training_model_for_propability, perform_prediction_for_model, perform_probability_prediction
 app = Flask(__name__, static_folder='../client/build', static_url_path='')
-cors = CORS(app)
+CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 df_massive_attacks = None
@@ -28,7 +28,6 @@ def initialize_data():
     training_model_for_type(df_prediction)
 
 @app.route('/')
-@cross_origin()
 def serve():
     return send_from_directory(app.static_folder, 'index.html')
 
