@@ -31,7 +31,6 @@ def serve():
     return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/graph1', methods=['GET'])
-@cross_origin
 def get_graph1():
     year = request.args.get('year', default=2024, type=int)
     graph = plot_total_launched_and_destroyed_per_year(df_massive_attacks, year)
@@ -40,7 +39,6 @@ def get_graph1():
     return response
 
 @app.route('/graph2')
-@cross_origin
 def get_graph2():
     year = request.args.get('year', default=2024, type=int)
     category = request.args.get('category', default="UAV", type=str)
