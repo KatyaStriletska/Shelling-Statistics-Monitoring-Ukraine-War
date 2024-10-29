@@ -15,7 +15,7 @@ function App() {
   const [launchPlaces, setLaunchPlaces] = useState([])
 
   const fetchLaunchPlaces = () =>{
-    fetch(`http://127.0.0.1:5000/get_launched_place`)
+    fetch(`https://shelling-statistics-monitoring-ukraine-v9i0.onrender.com/get_launched_place`)
         .then((res) => res.json())
         .then((data) => {
             console.log(launchPlaces)
