@@ -34,7 +34,9 @@ def serve():
 def get_graph1():
     year = request.args.get('year', default=2024, type=int)
     graph = plot_total_launched_and_destroyed_per_year(df_massive_attacks, year)
-    return jsonify(json.loads(graph))
+    response = jsonify(json.loads(graph))
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 @app.route('/graph2')
 def get_graph2():
