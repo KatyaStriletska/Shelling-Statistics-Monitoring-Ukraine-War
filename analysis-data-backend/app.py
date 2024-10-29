@@ -1,7 +1,7 @@
 import json
 import os
 from flask import Flask, jsonify, request, send_file, send_from_directory
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from map_data_processing import load_and_process_map_data
 from map_visualization import shelling_map_visualization
 from data_processing import load_and_process_data, get_data_of_weapon_by_year, get_categories_for_year, merge_two_data, get_category_of_weapon
@@ -9,7 +9,6 @@ from visualization import plot_civilian_deaths_over_time, plot_total_launched_an
 from data_predictions import get_launch_place_categories, preprocessing_for_prediction,  training_model_for_type, training_model_for_propability, perform_prediction_for_model, perform_probability_prediction
 app = Flask(__name__, static_folder='../client/build', static_url_path='')
 CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 
 df_massive_attacks = None
 df_weapon_groupby_year = None
@@ -37,6 +36,8 @@ def get_graph1():
     graph = plot_total_launched_and_destroyed_per_year(df_massive_attacks, year)
     response = jsonify(json.loads(graph))
     response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', "*")
+    response.headers.add('Access-Control-Allow-Methods', "*")
     return response
 
 @app.route('/graph2')
