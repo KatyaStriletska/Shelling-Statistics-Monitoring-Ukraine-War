@@ -8,7 +8,7 @@ from data_processing import load_and_process_data, get_data_of_weapon_by_year, g
 from visualization import plot_civilian_deaths_over_time, plot_total_launched_and_destroyed_per_year, chart_most_common_weapons_per_year, chart_most_common_category_per_year, plot_total_launched_and_destroyed_per_launch_place, plot_total_launched_and_destroyed_per_category_and_year
 from data_predictions import get_launch_place_categories, preprocessing_for_prediction,  training_model_for_type, training_model_for_propability, perform_prediction_for_model, perform_probability_prediction
 app = Flask(__name__, static_folder='../client/build', static_url_path='')
-CORS(app)  
+CORS(app)
 
 df_massive_attacks = None
 df_weapon_groupby_year = None
@@ -34,7 +34,9 @@ def serve():
 def get_graph1():
     year = request.args.get('year', default=2024, type=int)
     graph = plot_total_launched_and_destroyed_per_year(df_massive_attacks, year)
-    return jsonify(json.loads(graph))
+    response = jsonify(json.loads(graph))
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 @app.route('/graph2')
 def get_graph2():
