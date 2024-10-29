@@ -48,13 +48,13 @@ function App() {
       </section>
      
       <GraphLaunchDestrPerCategoryComponent
-        apiUrl = "https://shelling-statistics-monitoring-ukraine-v9i0.onrender.com/graph2"  
+        apiUrl = "http://127.0.0.1:5000/graph2"  
       />
       <ArticleComponent
         text= "The tables below summarize the main categories and models of weapons that have been observed during the conflict. These include unmanned aerial vehicles (UAVs), ballistic missiles, and cruise missiles. The UAV (unmanned aerial vehicle) category includes various models such as the Shahed-136/131, Orlan-10, Lancet and others used for reconnaissance, targeting and strike operations. Also represented are ballistic and cruise missiles, such as the Iskander-M and X-59/X-69, which are typically used to strike strategically important targets."
       />
       <WeaponTable
-        apiUrl = "https://shelling-statistics-monitoring-ukraine-v9i0.onrender.com/weapon_table"
+        apiUrl = "http://127.0.0.1:5000/weapon_table"
       />
   
       <ArticleComponent
