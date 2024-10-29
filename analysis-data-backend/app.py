@@ -30,7 +30,7 @@ def initialize_data():
 def serve():
     return send_from_directory(app.static_folder, 'index.html')
 
-@app.route('/graph1')
+@app.route('/graph1', methods=['GET'])
 def get_graph1():
     year = request.args.get('year', default=2024, type=int)
     graph = plot_total_launched_and_destroyed_per_year(df_massive_attacks, year)
