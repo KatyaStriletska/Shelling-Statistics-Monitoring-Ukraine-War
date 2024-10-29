@@ -9,7 +9,15 @@ const GraphLaunchedDestroyedComponent = ({apiUrl}) => {
     const years = [2022, 2023, 2024];
 
     const fetchGraphData = (year) => {
-        fetch(`${apiUrl}?year=${year}`)
+        fetch(`${apiUrl}?year=${year}`,
+              {
+                method: "GET",
+                mode: "cors",
+                headers: {
+                  "Access-Control-Allow-Origin": "*",
+                },
+              }
+             )
           .then((res) => res.json())
           .then((data) => {
             setGgraphData(data);
