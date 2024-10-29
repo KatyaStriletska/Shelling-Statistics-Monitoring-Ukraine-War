@@ -1,7 +1,7 @@
 import json
 import os
 from flask import Flask, jsonify, request, send_file, send_from_directory
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from map_data_processing import load_and_process_map_data
 from map_visualization import shelling_map_visualization
 from data_processing import load_and_process_data, get_data_of_weapon_by_year, get_categories_for_year, merge_two_data, get_category_of_weapon
@@ -31,6 +31,7 @@ def serve():
     return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/graph1', methods=['GET'])
+@cross_origin
 def get_graph1():
     year = request.args.get('year', default=2024, type=int)
     graph = plot_total_launched_and_destroyed_per_year(df_massive_attacks, year)
@@ -39,6 +40,7 @@ def get_graph1():
     return response
 
 @app.route('/graph2')
+@cross_origin
 def get_graph2():
     year = request.args.get('year', default=2024, type=int)
     category = request.args.get('category', default="UAV", type=str)
